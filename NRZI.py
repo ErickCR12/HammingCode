@@ -33,6 +33,3 @@ def nrzi_signal(bin_string):
     plt.ylabel('Número binario')
     plt.title('Señal digital NRZI')
     plt.show()
-
-nrzi_signal('011000110100')
-
