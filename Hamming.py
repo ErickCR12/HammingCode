@@ -83,3 +83,5 @@ def mensaje(codigo):
 
     #Retornamos el mensaje original
     return
+
+hamming("11001001010")

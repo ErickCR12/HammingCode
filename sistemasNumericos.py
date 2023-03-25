@@ -43,12 +43,12 @@ def hex_a_octal(num):
        
 ############################################################ 
 
-def hexadecimal_a_binario(numero_hex): 
+def hexadecimal_a_binario(num):
 
     if tres_digitos(num):
 
         try:       
-            numero_dec = int(numero_hex, 16)
+            numero_dec = int(num, 16)
             numero_bin = bin(numero_dec)
             return numero_bin[2:]
         
@@ -59,13 +59,4 @@ def hexadecimal_a_binario(numero_hex):
 
         return "El numero debe contener tres dígitos."    
 
-############################################################ 
-
-num = input("Ingrese un numero hexadecimal: ")
-print (hex_to_decimal(num))
-print (hex_a_octal(num)) 
-print (hexadecimal_a_binario(num))
-
-
-############################################################    
 

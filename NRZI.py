@@ -34,5 +34,5 @@ def nrzi_signal(bin_string):
     plt.title('Señal digital NRZI')
     plt.show()
 
-nrzi_signal('110100101')
+nrzi_signal('011000110100')
 

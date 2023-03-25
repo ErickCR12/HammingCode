@@ -1,11 +1,12 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
+from sistemasNumericos import *
 
 hexNumber = 0
-binaryNumber = 11111111111
-octalNumber = 3777
-decimalNumber = 2047
+binaryNumber = 0
+octalNumber = 0
+decimalNumber = 0
 
 SMALL_GEOMETRY_WIDTH = "500"
 SMALL_GEOMETRY_HEIGHT = "300"
@@ -61,9 +62,9 @@ def menuWindow():
     unpackContainers()
     menuContainer.pack()
 
-    # binaryNumber = hexToBinary(hexNumber)
-    # octalNumber = hexToOctal(hexNumber)
-    # decimalNumber = hexToDecimal(hexNumber)
+    binaryNumber = hexadecimal_a_binario(hexNumber)
+    octalNumber = hex_a_octal(hexNumber)
+    decimalNumber = hex_to_decimal(hexNumber)
 
     navigateToConversionsButton = Button(menuContainer, text="Ver conversiones numéricas",
                                          command=lambda: conversionsWindow())
