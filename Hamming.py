@@ -20,10 +20,10 @@ def hamming(mensaje):
         lista.append(i)
 
     #Calculamos los bits de paridad
-    p1 = int(lista[0]) ^ int(lista[1]) ^ int(lista[3]) ^ int(lista[4]) ^ int(lista[6]) ^ int(lista[8]) ^ int(lista[10])
-    p2 = int(lista[0]) ^ int(lista[2]) ^ int(lista[3]) ^ int(lista[5]) ^ int(lista[6]) ^ int(lista[9]) ^ int(lista[10])
-    p4 = int(lista[1]) ^ int(lista[2]) ^ int(lista[3]) ^ int(lista[7])
-    p8 = int(lista[4]) ^ int(lista[5]) ^ int(lista[6]) ^ int(lista[7])
+    p1 = int(lista[0]) ^ int(lista[1]) ^ int(lista[3]) ^ int(lista[4]) ^ int(lista[6]) ^ int(lista[8]) ^ int(lista[10])  # Correcto
+    p2 = int(lista[0]) ^ int(lista[2]) ^ int(lista[3]) ^ int(lista[5]) ^ int(lista[6]) ^ int(lista[9]) ^ int(lista[10])  # Correcto
+    p4 = int(lista[1]) ^ int(lista[2]) ^ int(lista[3]) ^ int(lista[7]) ^ int(lista[8]) ^ int(lista[9]) ^ int(lista[10])  # Correcto
+    p8 = int(lista[4]) ^ int(lista[5]) ^ int(lista[6]) ^ int(lista[7]) ^ int(lista[8]) ^ int(lista[9]) ^ int(lista[10])  # Correcto
 
     #Imprimimos el mensaje original
     print ("Mensaje original: " + mensaje)
@@ -50,10 +50,10 @@ def mensaje(codigo):
         lista.append(i)
 
     #Calculamos los bits de paridad
-    p1 = int(lista[0]) ^ int(lista[1]) ^ int(lista[3]) ^ int(lista[4]) ^ int(lista[6]) ^ int(lista[8]) ^ int(lista[10])
-    p2 = int(lista[0]) ^ int(lista[2]) ^ int(lista[3]) ^ int(lista[5]) ^ int(lista[6]) ^ int(lista[9]) ^ int(lista[10])
-    p4 = int(lista[1]) ^ int(lista[2]) ^ int(lista[3]) ^ int(lista[7])
-    p8 = int(lista[4]) ^ int(lista[5]) ^ int(lista[6]) ^ int(lista[7])
+    p1 = int(lista[0]) ^ int(lista[1]) ^ int(lista[3]) ^ int(lista[4]) ^ int(lista[6]) ^ int(lista[8]) ^ int(lista[10]) #Correcto
+    p2 = int(lista[0]) ^ int(lista[2]) ^ int(lista[3]) ^ int(lista[5]) ^ int(lista[6]) ^ int(lista[9]) ^ int(lista[10]) #Correcto
+    p4 = int(lista[1]) ^ int(lista[2]) ^ int(lista[3]) ^ int(lista[7]) ^ int(lista[8]) ^ int(lista[9]) ^ int(lista[10]) #Correcto
+    p8 = int(lista[4]) ^ int(lista[5]) ^ int(lista[6]) ^ int(lista[7]) ^ int(lista[8]) ^ int(lista[9]) ^ int(lista[10]) #Correcto
 
     #Calculamos el bit de error
     error = p1 + p2 + p4 + p8
@@ -85,3 +85,4 @@ def mensaje(codigo):
     return
 
 hamming("11001001010")
+mensaje("101110011001010")
