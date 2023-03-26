@@ -19,5 +19,3 @@ def nrzi_signal(binary_string):
     plt.xticks(x_values, binary_list)
     plt.title('NRZI Signal for ' + binary_string)
     plt.show()
-
-nrzi_signal('011000110100')

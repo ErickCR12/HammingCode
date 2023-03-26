@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 from sistemasNumericos import *
+from NRZI import *
 
 hexNumber = 0
 binaryNumber = 0
@@ -40,38 +41,33 @@ def hexWindow():
     hexEntry = Entry(hexContainer)
     hexEntry.grid(row=1, column=0)
 
-    confirmButton = Button(hexContainer, text="Ingresar", command=lambda: validateHexEntry(hexEntry.get()))
+    confirmButton = Button(hexContainer, text="Ingresar", command=lambda: validateHexEntry(hexEntry.get().upper()))
     confirmButton.grid(row=2, column=0)
 
 
 def validateHexEntry(pHexNumber):
-    global hexNumber
-    if validateHexNumber(pHexNumber):
+    global hexNumber, binaryNumber, octalNumber, decimalNumber
+    try:
         hexNumber = pHexNumber
+        binaryNumber = hexadecimal_a_binario(hexNumber)
+        octalNumber = hex_a_octal(hexNumber)
+        decimalNumber = hex_to_decimal(hexNumber)
         menuWindow()
-    else:
-        messagebox.showerror('Error en hexadecimal', 'Error: No se ingresó un hexadecimal válido o menor a 7FF')
-
-
-def validateHexNumber(hexNumber):
-    return True
+    except ValueError as e:
+        messagebox.showerror('Error en hexadecimal', e.args[0])
+        hexWindow()
 
 
 def menuWindow():
-    global hexNumber, binaryNumber, octalNumber, decimalNumber
     unpackContainers()
     menuContainer.pack()
-
-    binaryNumber = hexadecimal_a_binario(hexNumber)
-    octalNumber = hex_a_octal(hexNumber)
-    decimalNumber = hex_to_decimal(hexNumber)
 
     navigateToConversionsButton = Button(menuContainer, text="Ver conversiones numéricas",
                                          command=lambda: conversionsWindow())
     navigateToConversionsButton.grid(row=0, column=0)
 
     navigateToNRZI = Button(menuContainer, text="Ver codificación NRZI",
-                            command=lambda: hexWindow())
+                            command=lambda: nrzi_signal(binaryNumber))
     navigateToNRZI.grid(row=1, column=0)
 
     navigateToHamming = Button(menuContainer, text="Ver código Hamming",
