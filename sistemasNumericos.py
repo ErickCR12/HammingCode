@@ -50,7 +50,7 @@ def hexadecimal_a_binario(num):
         try:
             numero_dec = int(num, 16)
             numero_bin = bin(numero_dec)
-            return numero_bin[2:]
+            return bin_11digitos(numero_bin[2:])
 
         except ValueError as e:
             raise ValueError("El numero no es Hexadecimal")
@@ -58,3 +58,6 @@ def hexadecimal_a_binario(num):
         raise ValueError("El numero debe contener tres dígitos.")
 
 
+def bin_11digitos(num):
+    ceros = 11 - len(num)
+    return "0"*ceros + num
