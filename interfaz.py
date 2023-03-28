@@ -1,8 +1,12 @@
 from tkinter import *
+from tkinter import font
 from tkinter import messagebox
 from tkinter import ttk
 from sistemasNumericos import *
 from NRZI import *
+from Hamming import *
+
+
 
 hexNumber = 0
 binaryNumber = 0
@@ -21,6 +25,9 @@ conversionsContainer = Frame(app)
 hammingContainer = Frame(app)
 decodingContainer = Frame(app)
 
+print(str(font.families()))
+
+
 
 def unpackContainers():
     hexContainer.pack_forget()
@@ -36,7 +43,7 @@ def hexWindow():
     hexContainer.pack()
 
     instructionLabel = Label(hexContainer, text="Por favor ingrese un número hexadecimal válido no mayor a 7FF:")
-    instructionLabel.grid(row=0, column=0)
+    instructionLabel.grid(row=0, column=0, sticky="s", pady=(50, 0))
 
     hexEntry = Entry(hexContainer)
     hexEntry.grid(row=1, column=0)
@@ -147,15 +154,19 @@ def hammingCodingWindow():
     table.column("d10", width=30)
     table.column("d11", width=30)
 
-    table.insert("", "end", values=("Palabra de datos (sin paridad):",))
-    table.insert("", "end", values=("p1",))
-    table.insert("", "end", values=("p2",))
-    table.insert("", "end", values=("p3",))
-    table.insert("", "end", values=("p4",))
-    table.insert("", "end", values=("Palabra de datos (con paridad):",))
+    tableRows = createHammingTable(hamming(binaryNumber), ["Palabra de datos (sin paridad):", "p1",
+                                                           "p2", "p3", "p4", "Palabra de datos (con paridad):"])
+
+    table.insert("", "end", values=tableRows[0])
+    table.insert("", "end", values=tableRows[1])
+    table.insert("", "end", values=tableRows[2])
+    table.insert("", "end", values=tableRows[3])
+    table.insert("", "end", values=tableRows[4])
+    table.insert("", "end", values=tableRows[5])
+
 
     # hammingMatrix = hammingCode(binaryNumber)
-    codedBinary = "101111111111111"
+    codedBinary = "".join(tableRows[5][1:])
 
     instructionLabel = Label(hammingContainer,
                              text="Puede modificar un bit del número codificado para verificar el Hamming: ")
@@ -171,6 +182,15 @@ def hammingCodingWindow():
     confirmButton.grid(row=3, column=0)
 
 
+def createHammingTable(matrix, rowTitles):
+    tableRows = []
+    for i in range(len(matrix)):
+        tableRow = [rowTitles[i]]
+        for elem in matrix[i]:
+            tableRow.append(elem)
+        tableRows.append(tableRow)
+    return tableRows
+
 def validateModifiedBinary(modifiedBinary, codedBinary):
     try:
         if len(modifiedBinary) != len(codedBinary):
@@ -183,14 +203,14 @@ def validateModifiedBinary(modifiedBinary, codedBinary):
 
         if contModifications > 1:
             raise ValueError("Error: Se modificó más de un dígito del binario")
-        decodingWindow()
+        decodingWindow(modifiedBinary)
 
     except ValueError as e:
         messagebox.showerror('Error en entrada', e.args[0])
         hammingCodingWindow()
 
 
-def decodingWindow():
+def decodingWindow(modifiedBinary):
     unpackContainers()
     decodingContainer.pack()
     app.geometry(LARGE_GEOMETRY_WIDTH + "x" + SMALL_GEOMETRY_HEIGHT)
@@ -242,12 +262,13 @@ def decodingWindow():
     table.column("Prueba de paridad", width=105)
     table.column("Bit de paridad", width=50)
 
-    table.insert("", "end", values=("Palabra de datos (sin paridad):",))
-    table.insert("", "end", values=("p1",))
-    table.insert("", "end", values=("p2",))
-    table.insert("", "end", values=("p3",))
-    table.insert("", "end", values=("p4",))
-    table.insert("", "end", values=("Palabra de datos (con paridad):",))
+    tableRows = createHammingTable(decodificar(modifiedBinary), ["Palabra de datos recibida:", "p1", "p2", "p3", "p4"])
+
+    table.insert("", "end", values=tableRows[0])
+    table.insert("", "end", values=tableRows[1])
+    table.insert("", "end", values=tableRows[2])
+    table.insert("", "end", values=tableRows[3])
+    table.insert("", "end", values=tableRows[4])
 
     navigateToMenuButton = Button(decodingContainer, text="Volver a menú",
                                   command=lambda: menuWindow())
