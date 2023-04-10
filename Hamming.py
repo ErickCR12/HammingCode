@@ -1,5 +1,5 @@
 # Definimos la funcion para calcular el codigo hamming
-def hamming(mensaje):
+def hamming(mensaje, paridadPar = True):
     # Creamos una lista para guardar el mensaje
     lista = list(mensaje)
     listaF = []
@@ -14,9 +14,13 @@ def hamming(mensaje):
     p8 = int(lista[4]) ^ int(lista[5]) ^ int(lista[6]) ^ int(lista[7]) ^ int(lista[8]) ^ int(lista[9]) ^ int(
         lista[10])  # Correcto
 
-    # Calculamos el codigo hamming
-    codigo = str(p1) + str(p2) + lista[0] + str(p4) + lista[1] + lista[2] + lista[3] + str(p8) + lista[4] + lista[5] + \
-             lista[6] + lista[7] + lista[8] + lista[9] + lista[10]
+    # Calculamos el codigo hamming según la paridad deseada
+    if paridadPar:
+        codigo = str(p1) + str(p2) + lista[0] + str(p4) + lista[1] + lista[2] + lista[3] + str(p8) + lista[4] + lista[5] + \
+                 lista[6] + lista[7] + lista[8] + lista[9] + lista[10]
+    else:
+        codigo = str(int(not p1)) + str(int(not p2)) + lista[0] + str(int(not p4)) + lista[1] + lista[2] + lista[3] + \
+                 str(int(not p8)) + lista[4] + lista[5] + lista[6] + lista[7] + lista[8] + lista[9] + lista[10]
 
 
     for i in codigo:
@@ -34,7 +38,7 @@ def hamming(mensaje):
     # Retornamos el codigo hamming
     return MH
 
-def decodificar(mensaje):
+def decodificar(mensaje, paridadPar = True):
     lista = list(mensaje)
 
     pruebaParidad1 = int(lista[2]) ^ int(lista[4]) ^ int(lista[6]) ^ int(lista[8]) ^ int(lista[10]) ^ int(lista[12]) ^ int(
@@ -45,6 +49,13 @@ def decodificar(mensaje):
         lista[14])  # Correcto
     pruebaParidad4 = int(lista[8]) ^ int(lista[9]) ^ int(lista[10]) ^ int(lista[11]) ^ int(lista[12]) ^ int(lista[13]) ^ int(
         lista[14])  # Correcto
+
+    #Modificamos el resultado de las pruebas de paridad en caso de paridad impar
+    if not paridadPar:
+        pruebaParidad1 = pruebaParidad1 ^ 1
+        pruebaParidad2 = pruebaParidad2 ^ 1
+        pruebaParidad3 = pruebaParidad3 ^ 1
+        pruebaParidad4 = pruebaParidad4 ^ 1
 
     bitParidad1 = int(pruebaParidad1 != int(lista[0]))
     bitParidad2 = int(pruebaParidad2 != int(lista[1]))
