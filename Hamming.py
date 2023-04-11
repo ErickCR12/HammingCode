@@ -1,5 +1,5 @@
 # Definimos la funcion para calcular el codigo hamming
-def hamming(mensaje, paridadPar = True):
+def hamming(mensaje, paridadPar):
     # Creamos una lista para guardar el mensaje
     lista = list(mensaje)
     listaF = []
@@ -38,7 +38,7 @@ def hamming(mensaje, paridadPar = True):
     # Retornamos el codigo hamming
     return MH
 
-def decodificar(mensaje, paridadPar = True):
+def decodificar(mensaje, paridadPar):
     lista = list(mensaje)
 
     pruebaParidad1 = int(lista[2]) ^ int(lista[4]) ^ int(lista[6]) ^ int(lista[8]) ^ int(lista[10]) ^ int(lista[12]) ^ int(

@@ -15,10 +15,12 @@ def hex_to_decimal(num):
         try:
 
             decimal_num = int(num, 16)
+            if decimal_num > 2047:
+                raise ValueError
             return decimal_num
 
         except ValueError:
-            raise ValueError("El numero no es Hexadecimal")
+            raise ValueError("El número no es un hexadecimal válido o está fuera del rango.")
         
     else:
         raise ValueError("El numero debe contener tres dígitos.")

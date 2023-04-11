@@ -19,14 +19,14 @@ SMALL_GEOMETRY_HEIGHT = "300"
 LARGE_GEOMETRY_WIDTH = "800"
 
 app = Tk()
-hexContainer = Frame(app)
-menuContainer = Frame(app)
-conversionsContainer = Frame(app)
-hammingContainer = Frame(app)
-decodingContainer = Frame(app)
+app.configure(background="#87BBFF")
+hexContainer = Frame(app, background="#87BBFF")
+menuContainer = Frame(app, background="#87BBFF")
+conversionsContainer = Frame(app, background="#87BBFF")
+hammingContainer = Frame(app, background="#87BBFF")
+decodingContainer = Frame(app, background="#87BBFF")
 
-print(str(font.families()))
-
+parity = IntVar()
 
 
 def unpackContainers():
@@ -42,14 +42,16 @@ def hexWindow():
     unpackContainers()
     hexContainer.pack()
 
-    instructionLabel = Label(hexContainer, text="Por favor ingrese un número hexadecimal válido no mayor a 7FF:")
+    instructionLabel = Label(hexContainer, background="#87BBFF",
+                             text="Por favor ingrese un número hexadecimal válido no mayor a 7FF:")
     instructionLabel.grid(row=0, column=0, sticky="s", pady=(50, 0))
 
     hexEntry = Entry(hexContainer)
-    hexEntry.grid(row=1, column=0)
+    hexEntry.grid(row=1, column=0, pady=(50, 0))
 
-    confirmButton = Button(hexContainer, text="Ingresar", command=lambda: validateHexEntry(hexEntry.get().upper()))
-    confirmButton.grid(row=2, column=0)
+    confirmButton = Button(hexContainer, text="Ingresar", background="#73D3FF",
+                           command=lambda: validateHexEntry(hexEntry.get().upper()))
+    confirmButton.grid(row=2, column=0, pady=(50, 0))
 
 
 def validateHexEntry(pHexNumber):
@@ -66,24 +68,29 @@ def validateHexEntry(pHexNumber):
 
 
 def menuWindow():
+    global parity
     unpackContainers()
     menuContainer.pack()
 
-    navigateToConversionsButton = Button(menuContainer, text="Ver conversiones numéricas",
+    navigateToConversionsButton = Button(menuContainer, text="Ver conversiones numéricas", background="#73D3FF",
                                          command=lambda: conversionsWindow())
-    navigateToConversionsButton.grid(row=0, column=0)
+    navigateToConversionsButton.grid(row=0, column=1, pady=(60, 0))
 
-    navigateToNRZI = Button(menuContainer, text="Ver codificación NRZI",
+    navigateToNRZI = Button(menuContainer, text="Ver codificación NRZI", background="#73D3FF",
                             command=lambda: nrzi_signal(binaryNumber))
-    navigateToNRZI.grid(row=1, column=0)
+    navigateToNRZI.grid(row=1, column=1, pady=(15, 0))
 
-    navigateToHamming = Button(menuContainer, text="Ver código Hamming",
+    navigateToHamming = Button(menuContainer, text="Ver código Hamming", background="#73D3FF",
                                command=lambda: hammingCodingWindow())
-    navigateToHamming.grid(row=2, column=0)
+    navigateToHamming.grid(row=2, column=0, pady=(15, 0))
 
-    navigateToHexButton = Button(menuContainer, text="Volver a página de inicio",
+    checkbox = Checkbutton(menuContainer, text="Paridad par", variable=parity, onvalue=True, offvalue=False,
+                           background="#87BBFF")
+    checkbox.grid(row=2, column=2, pady=(15, 0))
+
+    navigateToHexButton = Button(menuContainer, text="Volver a página de inicio", background="#73D3FF",
                                  command=lambda: hexWindow())
-    navigateToHexButton.grid(row=3, column=0)
+    navigateToHexButton.grid(row=3, column=1, pady=(15, 0))
 
 
 def conversionsWindow():
@@ -106,7 +113,7 @@ def conversionsWindow():
 
     table.insert("", "end", values=(hexNumber, decimalNumber, octalNumber, binaryNumber))
 
-    navigateToMenuButton = Button(conversionsContainer, text="Volver a menú",
+    navigateToMenuButton = Button(conversionsContainer, text="Volver a menú", background="#73D3FF",
                                   command=lambda: menuWindow())
     navigateToMenuButton.grid(row=1, column=0)
 
@@ -154,7 +161,7 @@ def hammingCodingWindow():
     table.column("d10", width=30)
     table.column("d11", width=30)
 
-    tableRows = createHammingTable(hamming(binaryNumber), ["Palabra de datos (sin paridad):", "p1",
+    tableRows = createHammingTable(hamming(binaryNumber, parity.get()), ["Palabra de datos (sin paridad):", "p1",
                                                            "p2", "p3", "p4", "Palabra de datos (con paridad):"])
 
     table.insert("", "end", values=tableRows[0])
@@ -168,7 +175,7 @@ def hammingCodingWindow():
     # hammingMatrix = hammingCode(binaryNumber)
     codedBinary = "".join(tableRows[5][1:])
 
-    instructionLabel = Label(hammingContainer,
+    instructionLabel = Label(hammingContainer, background="#87BBFF",
                              text="Puede modificar un bit del número codificado para verificar el Hamming: ")
     instructionLabel.grid(row=1, column=0)
 
@@ -177,7 +184,7 @@ def hammingCodingWindow():
 
     codedEntry.insert(0, codedBinary)
 
-    confirmButton = Button(hammingContainer, text="Decodificar código",
+    confirmButton = Button(hammingContainer, text="Decodificar código", background="#73D3FF",
                            command=lambda: validateModifiedBinary(codedEntry.get(), codedBinary))
     confirmButton.grid(row=3, column=0)
 
@@ -262,7 +269,7 @@ def decodingWindow(modifiedBinary):
     table.column("Prueba de paridad", width=105)
     table.column("Bit de paridad", width=50)
 
-    tableRows = createHammingTable(decodificar(modifiedBinary), ["Palabra de datos recibida:", "p1", "p2", "p3", "p4"])
+    tableRows = createHammingTable(decodificar(modifiedBinary, parity.get()), ["Palabra de datos recibida:", "p1", "p2", "p3", "p4"])
 
     table.insert("", "end", values=tableRows[0])
     table.insert("", "end", values=tableRows[1])
@@ -270,7 +277,7 @@ def decodingWindow(modifiedBinary):
     table.insert("", "end", values=tableRows[3])
     table.insert("", "end", values=tableRows[4])
 
-    navigateToMenuButton = Button(decodingContainer, text="Volver a menú",
+    navigateToMenuButton = Button(decodingContainer, text="Volver a menú", background="#73D3FF",
                                   command=lambda: menuWindow())
     navigateToMenuButton.grid(row=1, column=0)
 
